@@ -26,7 +26,7 @@ class MessageRow extends Component {
           <a href="index.html">{this.props.message.subject}</a>
         </div>
       </div>
-    );
+    )
   }
 }
 

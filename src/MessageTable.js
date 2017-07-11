@@ -12,7 +12,7 @@ class MessageTable extends Component {
       <div className="MessageTable">
         {rows}
       </div>
-    );
+    )
   }
 }
 
