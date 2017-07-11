@@ -17,7 +17,7 @@ class MessageRow extends Component {
               <input type="checkbox" />
             </div>
             <div className="col-xs-2">
-              <i className="star fa fa-star"></i>
+              <i className={this.props.message.starred ? 'star fa fa-star-o' : 'star fa fa-star'}></i>
             </div>
           </div>
         </div>
