@@ -8,6 +8,7 @@ class MessageRow extends Component {
     this.state = {
       read: this.props.message.read,
       starred: this.props.message.starred,
+      starClass: this.props.message.starred ? 'star fa fa-star-o' : 'star fa fa-star',
       selected: false,
       rowClasses: this.props.message.read ? ' read' : ' unread'
     };
@@ -28,6 +29,19 @@ class MessageRow extends Component {
     this.setState({selected, rowClasses});
   }
 
+  toggleStar() {
+    let starClass;
+    let starred;
+    if (this.state.starred) {
+      starClass = 'star fa fa-star';
+      starred = false;
+    } else {
+      starClass = 'star fa fa-star-o';
+      starred = true;
+    }
+    this.setState({starred, starClass});
+  }
+
   render() {
     var labels = [];
     this.props.message.labels.forEach((labelText) => {
@@ -41,7 +55,7 @@ class MessageRow extends Component {
               <input type="checkbox" onClick={() => this.toggleSelected()}/>
             </div>
             <div className="col-xs-2">
-              <i className={this.props.message.starred ? 'star fa fa-star-o' : 'star fa fa-star'}></i>
+              <i className={this.state.starClass} onClick={() => this.toggleStar()}></i>
             </div>
           </div>
         </div>
