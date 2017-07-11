@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './index.css';
 
 class Toolbar extends Component {
   render() {
@@ -7,9 +7,9 @@ class Toolbar extends Component {
       <div className="Toolbar">
 
         <div className="row toolbar">
-        <div className="col-md-12">
+        <div className="col-md-12 text-left">
         <p className="pull-right">
-        <span className="badge badge">3</span>
+        <span className="badge badge">{this.props.messageCount}</span>
         unread messages
         </p>
 
@@ -46,7 +46,7 @@ class Toolbar extends Component {
         </div>
 
       </div>
-    );
+    )
   }
 }
 
