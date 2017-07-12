@@ -3,7 +3,7 @@ import './index.css';
 import Label from './Label.js';
 
 class MessageRow extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props);
     this.state = {
       read: this.props.message.read,

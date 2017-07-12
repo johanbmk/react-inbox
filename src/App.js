@@ -69,7 +69,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messageCount={messages.length} />
+          <Toolbar messageCount={messages.filter((msg) => !msg.read).length} />
           <MessageTable messages={messages}/>
         </div>
       </div>
