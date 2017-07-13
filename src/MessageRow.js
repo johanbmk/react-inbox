@@ -23,7 +23,7 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" onClick={() => this.props.updateState(this.props.message.id, 'toggleSelected')}/>
+              <input type="checkbox" defaultChecked={this.props.message.selected} onClick={() => this.props.updateState(this.props.message.id, 'toggleSelected')}/>
             </div>
             <div className="col-xs-2">
               <i className={starClass} onClick={() => this.props.updateState(this.props.message.id, 'toggleStar')}></i>

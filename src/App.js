@@ -96,11 +96,8 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messages={this.state.messages}
-            selectAllMessages={this.selectAllMessages} />
-          <MessageTable
-            messages={this.state.messages}
-            updateState={this.updateState} />
+          <Toolbar messages={this.state.messages} selectAllMessages={this.selectAllMessages} />
+          <MessageTable messages={this.state.messages} updateState={this.updateState} />
         </div>
       </div>
     )

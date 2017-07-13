@@ -6,9 +6,7 @@ class MessageTable extends Component {
   render() {
     var rows = [];
     this.props.messages.forEach((message) => {
-      rows.push(<MessageRow
-        message={message}
-        key={message.id}
+      rows.push(<MessageRow message={message} key={message.id}
         updateState={this.props.updateState} />);
     });
 
