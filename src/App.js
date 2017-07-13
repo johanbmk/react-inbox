@@ -90,16 +90,21 @@ class App extends Component {
   }
 
   selectAllMessages() {
-    let messages = this.state.messages;
-    let totalMessageCount = messages.length;
-    let selectedMessageCount = messages.reduce((count, msg) => {
-      return msg.selected ? count + 1 : count + 0;
-    }, 0);
-    let newValue = selectedMessageCount === totalMessageCount ? false : true;
-    for (let message of messages) {
-      message.selected = newValue;
-    }
-    this.setState({messages});
+    this.setState((prevState) => {
+      let totalMessageCount = prevState.messages.length;
+      let selectedMessageCount = prevState.messages.reduce((count, msg) => {
+        return msg.selected ? count + 1 : count + 0;
+      }, 0);
+
+      let newValue = selectedMessageCount === totalMessageCount ? false : true;
+
+      return {
+        messages: prevState.messages.map((msg) => {
+          msg.selected = newValue;
+          return msg;
+        })
+      }
+    })
   }
 
   render() {
