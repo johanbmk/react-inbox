@@ -9,7 +9,7 @@ class MessageTable extends Component {
       rows.push(<MessageRow
         message={message}
         key={message.id}
-        toggleMessageSelected={this.props.toggleMessageSelected} />);
+        updateState={this.props.updateState} />);
     });
 
     return (
