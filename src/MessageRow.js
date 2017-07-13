@@ -12,10 +12,10 @@ class MessageRow extends Component {
     };
   }
 
-  toggleSelected() {
-    let selected = !this.state.selected;
-    this.setState({selected});
-  }
+  // toggleSelected() {
+  //   let selected = !this.state.selected;
+  //   this.setState({selected});
+  // }
 
   toggleStarred() {
     let starred = !this.state.starred;
@@ -24,19 +24,20 @@ class MessageRow extends Component {
 
   render() {
     const readClass = this.state.read ? 'read' : 'unread';
-    const selectedClass = this.state.selected ? 'selected' : '';
+    const selectedClass = this.props.message.selected ? 'selected' : '';
     const starClass = this.state.starred ? 'star fa fa-star' : 'star fa fa-star-o';
 
     var labels = [];
     this.props.message.labels.forEach((labelText) => {
       labels.push(<Label text={labelText} key={labelText} />);
     });
+
     return (
       <div className={`row message ${readClass} ${selectedClass}`}>
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" onClick={() => this.toggleSelected()}/>
+              <input type="checkbox" onClick={() => this.props.toggleMessageSelected(this.props.message.id)}/>
             </div>
             <div className="col-xs-2">
               <i className={starClass} onClick={() => this.toggleStarred()}></i>

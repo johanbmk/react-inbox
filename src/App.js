@@ -62,15 +62,47 @@ const messages = [
     "starred": true,
     "labels": []
   }
-];
+]
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    let newMessages = messages.map(msg => {
+      let newMsg = msg;
+      msg.selected = false;
+      return newMsg;
+    });
+
+    this.state = {
+      messages: newMessages
+    };
+
+    this.toggleMessageSelected = this.toggleMessageSelected.bind(this);
+    this.selectAllMessages = this.selectAllMessages.bind(this);
+  }
+
+  toggleMessageSelected(messageId) {
+    let newMessages = this.state.messages;
+    let message = newMessages.find(msg => msg.id === messageId);
+    message.selected = !message.selected;
+    this.setState({messages: newMessages});
+  }
+
+  selectAllMessages() {
+    console.log("Hello from 'selectAllMessages'!");
+  }
+
   render() {
+
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messageCount={messages.filter((msg) => !msg.read).length} />
-          <MessageTable messages={messages}/>
+          <Toolbar messages={this.state.messages}
+            selectAllMessages={this.selectAllMessages} />
+          <MessageTable
+            messages={this.state.messages}
+            toggleMessageSelected={this.toggleMessageSelected} />
         </div>
       </div>
     )
@@ -78,3 +110,6 @@ class App extends Component {
 }
 
 export default App;
+
+// Old stuff
+// <Toolbar messageCount={this.state.messages.filter((msg) => !msg.read).length} />

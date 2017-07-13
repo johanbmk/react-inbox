@@ -3,18 +3,20 @@ import './index.css';
 
 class Toolbar extends Component {
   render() {
+    let messageCount = this.props.messages.filter((msg) => !msg.read).length;
+
     return (
       <div className="Toolbar">
 
         <div className="row toolbar">
         <div className="col-md-12 text-left">
         <p className="pull-right">
-        <span className="badge badge">{this.props.messageCount}</span>
+        <span className="badge badge">{messageCount}</span>
         unread messages
         </p>
 
         <button className="btn btn-default">
-        <i className="fa fa-square-o"></i>
+        <i className="fa fa-square-o" onClick={() => this.props.selectAllMessages()}></i>
         </button>
 
         <button className="btn btn-default" disabled="disabled">
