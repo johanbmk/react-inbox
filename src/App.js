@@ -72,19 +72,21 @@ class App extends Component {
       messages,
     };
 
-    this.updateState = this.updateState.bind(this);
+    this.toggleProperty = this.toggleProperty.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
 
-  updateState(messageId, change) {
-    let messages = this.state.messages;
-    let message = messages.find(msg => msg.id === messageId);
-    if (change === 'toggleStar') {
-      message.starred = !message.starred;
-    } else if (change === 'toggleSelected') {
-      message.selected = !message.selected;
-    }
-    this.setState({messages});
+  toggleProperty(message, property) {
+    this.setState((prevState) => {
+      const index = prevState.messages.indexOf(message);
+      return {
+        messages: [
+          ...prevState.messages.slice(0, index),
+          { ...message, [property]: !message[property] },
+          ...prevState.messages.slice(index + 1),
+        ]
+      }
+    })
   }
 
   selectAllMessages() {
@@ -106,7 +108,7 @@ class App extends Component {
       <div className="App">
         <div className="container">
           <Toolbar messages={this.state.messages} selectAllMessages={this.selectAllMessages} />
-          <MessageTable messages={this.state.messages} updateState={this.updateState} />
+          <MessageTable messages={this.state.messages} toggleProperty={this.toggleProperty} />
         </div>
       </div>
     )
