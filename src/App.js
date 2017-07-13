@@ -88,7 +88,16 @@ class App extends Component {
   }
 
   selectAllMessages() {
-    console.log("Hello from 'selectAllMessages'!");
+    let messages = this.state.messages;
+    let totalMessageCount = messages.length;
+    let selectedMessageCount = messages.reduce((count, msg) => {
+      return msg.selected ? count + 1 : count + 0;
+    }, 0);
+    let newValue = selectedMessageCount === totalMessageCount ? false : true;
+    for (let message of messages) {
+      message.selected = newValue;
+    }
+    this.setState({messages});
   }
 
   render() {

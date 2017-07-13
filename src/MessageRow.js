@@ -12,6 +12,7 @@ class MessageRow extends Component {
     const readClass = this.props.message.read ? 'read' : 'unread';
     const selectedClass = this.props.message.selected ? 'selected' : '';
     const starClass = this.props.message.starred ? 'star fa fa-star' : 'star fa fa-star-o';
+    // console.log(this.props.message.id, this.props.message.selected);
 
     var labels = [];
     this.props.message.labels.forEach((labelText) => {
@@ -23,7 +24,7 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" defaultChecked={this.props.message.selected} onClick={() => this.props.updateState(this.props.message.id, 'toggleSelected')}/>
+              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.updateState(this.props.message.id, 'toggleSelected')} />
             </div>
             <div className="col-xs-2">
               <i className={starClass} onClick={() => this.props.updateState(this.props.message.id, 'toggleStar')}></i>
