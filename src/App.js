@@ -73,6 +73,7 @@ class App extends Component {
     };
 
     this.toggleProperty = this.toggleProperty.bind(this);
+    this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
 
@@ -85,6 +86,19 @@ class App extends Component {
           { ...message, [property]: !message[property] },
           ...prevState.messages.slice(index + 1),
         ]
+      }
+    })
+  }
+
+  setRead(messages, value) {
+    this.setState((prevState) => {
+      let tempMessages = prevState.messages.slice();
+      messages.forEach((message) => {
+        let index = tempMessages.indexOf(message);
+        tempMessages[index].read = value;
+      });
+      return {
+        messages: tempMessages
       }
     })
   }
@@ -112,7 +126,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messages={this.state.messages} selectAllMessages={this.selectAllMessages} />
+          <Toolbar messages={this.state.messages} selectAllMessages={this.selectAllMessages} setRead={this.setRead} />
           <MessageTable messages={this.state.messages} toggleProperty={this.toggleProperty} />
         </div>
       </div>

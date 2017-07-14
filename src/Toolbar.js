@@ -6,22 +6,22 @@ class Toolbar extends Component {
     // let unreadMessagesCount = this.props.messages.filter((msg) => !msg.read).length;
     // let selectedMessagesCount = this.props.messages.filter((msg) => msg.selected).length;
     let totalMessagesCount = this.props.messages.length;
+    let selectedMessages = [];
     let unreadMessagesCount = 0;
-    let selectedMessagesCount = 0;
     for (let msg of this.props.messages) {
-      if (!msg.read) {unreadMessagesCount += 1};
-      if (msg.selected) {selectedMessagesCount += 1};
+      if (!msg.read) { unreadMessagesCount += 1 };
+      if (msg.selected) { selectedMessages.push(msg) };
     }
 
     // Set 'select all' button appearance depending on selected messages count
     let selectAllButtonClass;
-    if (selectedMessagesCount === 0) {
+    if (selectedMessages.length === 0) {
       selectAllButtonClass = 'fa fa-square-o'; // no message selected
     }
-    else if (selectedMessagesCount === totalMessagesCount) {
+    else if (selectedMessages.length === totalMessagesCount) {
       selectAllButtonClass = 'fa fa-check-square-o'; // all messages selected
     }
-    else if (selectedMessagesCount > 0) {
+    else {
       selectAllButtonClass = 'fa fa-minus-square-o'; // some messages selected
     }
 
@@ -39,11 +39,13 @@ class Toolbar extends Component {
         <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
         </button>
 
-        <button className="btn btn-default" disabled={selectedMessagesCount === 0}>
+        <button className="btn btn-default" disabled={selectedMessages.length === 0}
+        onClick={() => this.props.setRead(selectedMessages, true)}>
         Mark As Read
         </button>
 
-        <button className="btn btn-default" disabled={selectedMessagesCount === 0}>
+        <button className="btn btn-default" disabled={selectedMessages.length === 0}
+        onClick={() => this.props.setRead(selectedMessages, false)}>
         Mark As Unread
         </button>
 
