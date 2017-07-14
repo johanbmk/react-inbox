@@ -14,12 +14,14 @@ class Toolbar extends Component {
     }
 
     // Set 'select all' button appearance depending on selected messages count
-    let selectAllButtonClass = 'fa fa-square-o';
+    let selectAllButtonClass;
     if (selectedMessagesCount === 0) {
-      selectAllButtonClass = 'fa fa-square-o';
-    } else if (selectedMessagesCount === totalMessagesCount) {
+      selectAllButtonClass = 'fa fa-square-o'; // no message selected
+    }
+    else if (selectedMessagesCount === totalMessagesCount) {
       selectAllButtonClass = 'fa fa-check-square-o'; // all messages selected
-    } else if (selectedMessagesCount > 0) {
+    }
+    else if (selectedMessagesCount > 0) {
       selectAllButtonClass = 'fa fa-minus-square-o'; // some messages selected
     }
 
@@ -37,11 +39,11 @@ class Toolbar extends Component {
         <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
         </button>
 
-        <button className="btn btn-default" disabled="disabled">
+        <button className="btn btn-default" disabled={selectedMessagesCount === 0}>
         Mark As Read
         </button>
 
-        <button className="btn btn-default" disabled="disabled">
+        <button className="btn btn-default" disabled={selectedMessagesCount === 0}>
         Mark As Unread
         </button>
 
