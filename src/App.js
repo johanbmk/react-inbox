@@ -9,22 +9,17 @@ class App extends Component {
 
     this.state = { messages: [] };
 
-    this.setMessages = this.setMessages.bind(this);
     this.fetchMessages = this.fetchMessages.bind(this);
     this.toggleProperty = this.toggleProperty.bind(this);
     this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
 
-  setMessages(result) {
-    this.setState({ messages: result._embedded.messages });
-  }
-
   async fetchMessages() {
     try {
       const response = await fetch('http://localhost:8181/api/messages');
-      const result = await response.json();
-      this.setMessages(result);
+      const json = await response.json();
+      this.setState({ messages: json._embedded.messages });
     } catch(err) {
       console.error(err);
     }
