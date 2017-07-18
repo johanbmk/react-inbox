@@ -22,7 +22,7 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.setProperty([this.props.message], 'selected', !this.props.message.selected)} />
+              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.setProperty([this.props.message.id], 'selected', !this.props.message.selected)} />
             </div>
             <div className="col-xs-2">
               <i className={starClass} onClick={() => this.props.setProperty([this.props.message.id], 'starred', !this.props.message.starred)}></i>
