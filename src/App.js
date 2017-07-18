@@ -10,6 +10,7 @@ class App extends Component {
     this.state = { messageIds: [], messagesById: {} };
 
     this.fetchMessages = this.fetchMessages.bind(this);
+    this.setProperty = this.setProperty.bind(this);
     this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
@@ -27,7 +28,6 @@ class App extends Component {
         messageIds.push(messageId);
       }
       this.setState({ messageIds, messagesById });
-      console.log(messageIds);
 
     } catch(err) {
       console.error(err);
@@ -61,16 +61,18 @@ class App extends Component {
           method: "PATCH",
           body: JSON.stringify(requestBody)
         });
+
         if (response.status === 200) {
+          let changedMessagesById = {};
+          messageIds.forEach((id) => {
+            let message = this.state.messagesById[id];
+            changedMessagesById[id] = { ...message, [property]: value };
+          });
+
           this.setState((prevState) => {
-            let changedMessagesById = {};
-            messageIds.forEach((id) => {
-              let message = this.state.messagesById[id];
-              changedMessagesById[id] = { ...message, [property]: value };
-            });
             return {
               messageIds: prevState.messageIds,
-              messagesById: { ...prevState.messagesById, changedMessagesById }
+              messagesById: { ...prevState.messagesById, ...changedMessagesById }
             }
           })
         }
@@ -79,12 +81,12 @@ class App extends Component {
       }
     } else {
       // for 'selected' messages
+      let changedMessagesById = {};
+      messageIds.forEach((id) => {
+        let message = this.state.messagesById[id];
+        changedMessagesById[id] = { ...message, [property]: value };
+      });
       this.setState((prevState) => {
-        let changedMessagesById = {};
-        messageIds.forEach((id) => {
-          let message = this.state.messagesById[id];
-          changedMessagesById[id] = { ...message, [property]: value };
-        });
         return {
           messageIds: prevState.messageIds,
           messagesById: { ...prevState.messagesById, changedMessagesById }
@@ -92,19 +94,6 @@ class App extends Component {
       })
     }
   }
-
-  // toggleProperty(message, property) {
-  //   this.setState((prevState) => {
-  //     const index = prevState.messages.indexOf(message);
-  //     return {
-  //       messages: [
-  //         ...prevState.messages.slice(0, index),
-  //         { ...message, [property]: !message[property] },
-  //         ...prevState.messages.slice(index + 1),
-  //       ]
-  //     }
-  //   })
-  // }
 
   setRead(messages, value) {
     this.setState((prevState) => {
