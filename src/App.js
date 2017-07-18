@@ -77,7 +77,7 @@ class App extends Component {
   }
 
   setPropertyUpdateState(messageIds, property, value) {
-    // Meant to ba called from inside setProperty
+    console.log(messageIds, property, value);
     let changedMessagesById = {};
     messageIds.forEach((id) => {
       let message = this.state.messagesById[id];
@@ -105,24 +105,18 @@ class App extends Component {
     })
   }
 
-  selectAllMessages() {
-    this.setState((prevState) => {
-      let totalMessageCount = prevState.messages.length;
-      let selectedMessageCount = prevState.messages.reduce((count, msg) => {
-        return msg.selected ? count + 1 : count + 0;
-      }, 0);
-      let newValue = selectedMessageCount === totalMessageCount ? false : true;
-      return {
-        messages: prevState.messages.map((msg) => {
-          msg.selected = newValue;
-          return msg;
-        })
-      }
-    })
+  selectAllMessages(selectedMessageIds) {
+    let totalMessageCount = this.state.messageIds.length;
+    if (selectedMessageIds.length === totalMessageCount) {
+      // That means all messages are already selected, so unselect them all.
+      this.setProperty(selectedMessageIds, 'selected', false);
+    } else {
+      let messageIdsToSelect = this.state.messageIds.filter(id => !this.state.messagesById[id].selected);
+      this.setProperty(messageIdsToSelect, 'selected', true);
+    }
   }
 
   render() {
-
     return (
       <div className="App">
         <div className="container">

@@ -35,7 +35,7 @@ class Toolbar extends Component {
         </p>
 
         <button className="btn btn-default">
-        <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
+        <i className={selectAllButtonClass} onClick={() => this.props.selectAllMessages(selectedMessageIds)}></i>
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
