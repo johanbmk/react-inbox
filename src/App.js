@@ -7,10 +7,9 @@ class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { messages: [] };
+    this.state = { messageIds: [], messagesById: {} };
 
     this.fetchMessages = this.fetchMessages.bind(this);
-    this.toggleProperty = this.toggleProperty.bind(this);
     this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
@@ -19,7 +18,17 @@ class App extends Component {
     try {
       const response = await fetch('http://localhost:8181/api/messages');
       const json = await response.json();
-      this.setState({ messages: json._embedded.messages });
+      let messageIds = [];
+      let messagesById = {};
+      for (let i = 0; i < json._embedded.messages.length; i++) {
+        let message = json._embedded.messages[i];
+        let messageId = message.id;
+        messagesById[messageId] = message;
+        messageIds.push(messageId);
+      }
+      this.setState({ messageIds, messagesById });
+      console.log(messageIds);
+
     } catch(err) {
       console.error(err);
     }
@@ -29,18 +38,73 @@ class App extends Component {
     this.fetchMessages();
   }
 
-  toggleProperty(message, property) {
-    this.setState((prevState) => {
-      const index = prevState.messages.indexOf(message);
-      return {
-        messages: [
-          ...prevState.messages.slice(0, index),
-          { ...message, [property]: !message[property] },
-          ...prevState.messages.slice(index + 1),
-        ]
+  async setProperty(messageIds, property, value) {
+    let updateServer = false;
+    let requestBody;
+
+    if (property === 'starred') {
+      updateServer = true;
+      requestBody = {
+        messageIds,
+        command: 'star',
+        star: value
+      };
+    }
+
+    if (updateServer) {
+      try {
+        const response = await fetch('http://localhost:8181/api/messages', {
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          method: "PATCH",
+          body: JSON.stringify(requestBody)
+        });
+        if (response.status === 200) {
+          this.setState((prevState) => {
+            let changedMessagesById = {};
+            messageIds.forEach((id) => {
+              let message = this.state.messagesById[id];
+              changedMessagesById[id] = { ...message, [property]: value };
+            });
+            return {
+              messageIds: prevState.messageIds,
+              messagesById: { ...prevState.messagesById, changedMessagesById }
+            }
+          })
+        }
+      } catch(err) {
+        console.error('Problems starring a message:', err);
       }
-    })
+    } else {
+      // for 'selected' messages
+      this.setState((prevState) => {
+        let changedMessagesById = {};
+        messageIds.forEach((id) => {
+          let message = this.state.messagesById[id];
+          changedMessagesById[id] = { ...message, [property]: value };
+        });
+        return {
+          messageIds: prevState.messageIds,
+          messagesById: { ...prevState.messagesById, changedMessagesById }
+        }
+      })
+    }
   }
+
+  // toggleProperty(message, property) {
+  //   this.setState((prevState) => {
+  //     const index = prevState.messages.indexOf(message);
+  //     return {
+  //       messages: [
+  //         ...prevState.messages.slice(0, index),
+  //         { ...message, [property]: !message[property] },
+  //         ...prevState.messages.slice(index + 1),
+  //       ]
+  //     }
+  //   })
+  // }
 
   setRead(messages, value) {
     this.setState((prevState) => {
@@ -76,8 +140,9 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messages={this.state.messages} selectAllMessages={this.selectAllMessages} setRead={this.setRead} />
-          <MessageTable messages={this.state.messages} toggleProperty={this.toggleProperty} />
+          <Toolbar messageIds={this.state.messageIds} messagesById={this.state.messagesById} selectAllMessages={this.selectAllMessages} setRead={this.setRead} />
+
+          <MessageTable messageIds={this.state.messageIds} messagesById={this.state.messagesById} setProperty={this.setProperty} />
         </div>
       </div>
     )

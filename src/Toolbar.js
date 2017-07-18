@@ -3,22 +3,21 @@ import './index.css';
 
 class Toolbar extends Component {
   render() {
-    // let unreadMessagesCount = this.props.messages.filter((msg) => !msg.read).length;
-    // let selectedMessagesCount = this.props.messages.filter((msg) => msg.selected).length;
-    let totalMessagesCount = this.props.messages.length;
-    let selectedMessages = [];
+    let totalMessagesCount = this.props.messageIds.length;
+    let selectedMessageIds = [];
     let unreadMessagesCount = 0;
-    for (let msg of this.props.messages) {
-      if (!msg.read) { unreadMessagesCount += 1 };
-      if (msg.selected) { selectedMessages.push(msg) };
+    for (let id of this.props.messageIds) {
+      let message = this.props.messagesById[id];
+      if (!message.read) { unreadMessagesCount += 1 };
+      if (message.selected) { selectedMessageIds.push(id) };
     }
 
     // Set 'select all' button appearance depending on selected messages count
     let selectAllButtonClass;
-    if (selectedMessages.length === 0) {
+    if (selectedMessageIds.length === 0) {
       selectAllButtonClass = 'fa fa-square-o'; // no message selected
     }
-    else if (selectedMessages.length === totalMessagesCount) {
+    else if (selectedMessageIds.length === totalMessagesCount) {
       selectAllButtonClass = 'fa fa-check-square-o'; // all messages selected
     }
     else {
@@ -39,13 +38,13 @@ class Toolbar extends Component {
         <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
         </button>
 
-        <button className="btn btn-default" disabled={selectedMessages.length === 0}
-        onClick={() => this.props.setRead(selectedMessages, true)}>
+        <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
+        onClick={() => this.props.setRead(selectedMessageIds, true)}>
         Mark As Read
         </button>
 
-        <button className="btn btn-default" disabled={selectedMessages.length === 0}
-        onClick={() => this.props.setRead(selectedMessages, false)}>
+        <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
+        onClick={() => this.props.setRead(selectedMessageIds, false)}>
         Mark As Unread
         </button>
 

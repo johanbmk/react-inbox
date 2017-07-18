@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import './index.css';
 import Label from './Label.js';
 
+// Available:
+// this.props.message
+// this.props.setProperty
+
 class MessageRow extends Component {
   render() {
     const readClass = this.props.message.read ? 'read' : 'unread';
@@ -18,10 +22,10 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.toggleProperty(this.props.message, 'selected')} />
+              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.setProperty([this.props.message], 'selected', !this.props.message.selected)} />
             </div>
             <div className="col-xs-2">
-              <i className={starClass} onClick={() => this.props.toggleProperty(this.props.message, 'starred')}></i>
+              <i className={starClass} onClick={() => this.props.setProperty([this.props.message.id], 'starred', !this.props.message.starred)}></i>
             </div>
           </div>
         </div>
