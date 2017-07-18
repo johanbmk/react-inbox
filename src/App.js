@@ -11,6 +11,7 @@ class App extends Component {
 
     this.fetchMessages = this.fetchMessages.bind(this);
     this.setProperty = this.setProperty.bind(this);
+    this.setPropertyUpdateState = this.setPropertyUpdateState.bind(this);
     this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
@@ -49,6 +50,8 @@ class App extends Component {
         command: 'star',
         star: value
       };
+    } else if (property === 'selected') {
+      updateServer = false;
     }
 
     if (updateServer) {
@@ -63,36 +66,30 @@ class App extends Component {
         });
 
         if (response.status === 200) {
-          let changedMessagesById = {};
-          messageIds.forEach((id) => {
-            let message = this.state.messagesById[id];
-            changedMessagesById[id] = { ...message, [property]: value };
-          });
-
-          this.setState((prevState) => {
-            return {
-              messageIds: prevState.messageIds,
-              messagesById: { ...prevState.messagesById, ...changedMessagesById }
-            }
-          })
+          this.setPropertyUpdateState(messageIds, property, value);
         }
       } catch(err) {
         console.error('Problems starring a message:', err);
       }
     } else {
-      // for 'selected' messages
-      let changedMessagesById = {};
-      messageIds.forEach((id) => {
-        let message = this.state.messagesById[id];
-        changedMessagesById[id] = { ...message, [property]: value };
-      });
-      this.setState((prevState) => {
-        return {
-          messageIds: prevState.messageIds,
-          messagesById: { ...prevState.messagesById, changedMessagesById }
-        }
-      })
+      this.setPropertyUpdateState(messageIds, property, value);
     }
+  }
+
+  setPropertyUpdateState(messageIds, property, value) {
+    // Meant to ba called from inside setProperty
+    let changedMessagesById = {};
+    messageIds.forEach((id) => {
+      let message = this.state.messagesById[id];
+      changedMessagesById[id] = { ...message, [property]: value };
+    });
+    this.setState((prevState) => {
+      return {
+        messageIds: prevState.messageIds,
+        messagesById: { ...prevState.messagesById, ...changedMessagesById }
+      }
+    })
+
   }
 
   setRead(messages, value) {
