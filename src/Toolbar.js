@@ -48,14 +48,16 @@ class Toolbar extends Component {
         Mark As Unread
         </button>
 
-        <select className="form-control label-select" disabled="disabled">
+        <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
+        onChange={(event) => this.props.setProperty(selectedMessageIds, 'label', true, event.target.value)}>
         <option>Apply label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
         </select>
 
-        <select className="form-control label-select" disabled="disabled">
+        <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
+        onChange={(event) => this.props.setProperty(selectedMessageIds, 'label', false, event.target.value)}>
         <option>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>

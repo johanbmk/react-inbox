@@ -38,7 +38,8 @@ class App extends Component {
     this.fetchMessages();
   }
 
-  async setProperty(messageIds, property, value) {
+  async setProperty(messageIds, property, value, label) {
+    // 'label' is just for labels
     let updateServer = false;
     let requestBody;
 
@@ -62,6 +63,17 @@ class App extends Component {
         messageIds,
         command: 'delete'
       };
+    } else if (property === 'label') {
+      updateServer = true;
+      let filteredMessageIds = value ?
+        messageIds.filter((id) => !this.state.messagesById[id].labels.includes(label)) :
+        messageIds.filter((id) => this.state.messagesById[id].labels.includes(label));
+      requestBody = {
+        messageIds: filteredMessageIds,
+        command: value ? 'addLabel' : 'removeLabel',
+        label
+      };
+    console.log(requestBody);
     } else if (property === 'selected') {
       updateServer = false;
     } else {
@@ -80,7 +92,7 @@ class App extends Component {
         });
 
         if (response.status === 200) {
-          this.setPropertyUpdateState(messageIds, property, value);
+          this.setPropertyUpdateState(messageIds, property, value, label);
         }
       } catch(err) {
         console.error('API problem:', err);
@@ -90,7 +102,7 @@ class App extends Component {
     }
   }
 
-  setPropertyUpdateState(messageIds, property, value) {
+  setPropertyUpdateState(messageIds, property, value, label) {
     if (property === 'delete') {
       // Not really a property. It means to delete the messages.
       let newMessageIds = [];
@@ -106,6 +118,32 @@ class App extends Component {
           messagesById: newMessagesById
         }
       })
+    } else if (property === 'label') {
+      let filteredMessageIds = value ?
+        messageIds.filter((id) => !this.state.messagesById[id].labels.includes(label)) :
+        messageIds.filter((id) => this.state.messagesById[id].labels.includes(label));
+
+      let changedMessagesById = {};
+      filteredMessageIds.forEach((id) => {
+        let newLabels;
+        let message = this.state.messagesById[id];
+        if (value) {
+          // Add label to labels array for this message
+          newLabels = message.labels.slice();
+          newLabels.push(label);
+        } else {
+          // Remove label from labels array for this message
+          newLabels = message.labels.filter((lbl) => lbl !== label);
+        }
+        changedMessagesById[id] = { ...message, labels: newLabels };
+      })
+      this.setState((prevState) => {
+        return {
+          messageIds: prevState.messageIds,
+          messagesById: { ...prevState.messagesById, ...changedMessagesById }
+        }
+      })
+
     } else {
       let changedMessagesById = {};
       messageIds.forEach((id) => {
