@@ -12,7 +12,6 @@ class App extends Component {
     this.fetchMessages = this.fetchMessages.bind(this);
     this.setProperty = this.setProperty.bind(this);
     this.setPropertyUpdateState = this.setPropertyUpdateState.bind(this);
-    this.setRead = this.setRead.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
   }
 
@@ -50,8 +49,17 @@ class App extends Component {
         command: 'star',
         star: value
       };
+    } else if (property === 'read') {
+      updateServer = true;
+      requestBody = {
+        messageIds,
+        command: 'read',
+        read: value
+      };
     } else if (property === 'selected') {
       updateServer = false;
+    } else {
+      console.error('Unknown property:', property);
     }
 
     if (updateServer) {
@@ -69,7 +77,7 @@ class App extends Component {
           this.setPropertyUpdateState(messageIds, property, value);
         }
       } catch(err) {
-        console.error('Problems starring a message:', err);
+        console.error('API problem:', err);
       }
     } else {
       this.setPropertyUpdateState(messageIds, property, value);
@@ -77,7 +85,6 @@ class App extends Component {
   }
 
   setPropertyUpdateState(messageIds, property, value) {
-    console.log(messageIds, property, value);
     let changedMessagesById = {};
     messageIds.forEach((id) => {
       let message = this.state.messagesById[id];
@@ -90,19 +97,6 @@ class App extends Component {
       }
     })
 
-  }
-
-  setRead(messages, value) {
-    this.setState((prevState) => {
-      let tempMessages = prevState.messages.slice();
-      messages.forEach((message) => {
-        let index = tempMessages.indexOf(message);
-        tempMessages[index].read = value;
-      });
-      return {
-        messages: tempMessages
-      }
-    })
   }
 
   selectAllMessages(selectedMessageIds) {
@@ -120,7 +114,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messageIds={this.state.messageIds} messagesById={this.state.messagesById} selectAllMessages={this.selectAllMessages} setRead={this.setRead} />
+          <Toolbar messageIds={this.state.messageIds} messagesById={this.state.messagesById} selectAllMessages={this.selectAllMessages} setProperty={this.setProperty} />
 
           <MessageTable messageIds={this.state.messageIds} messagesById={this.state.messagesById} setProperty={this.setProperty} />
         </div>

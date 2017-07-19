@@ -39,12 +39,12 @@ class Toolbar extends Component {
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
-        onClick={() => this.props.setRead(selectedMessageIds, true)}>
+        onClick={() => this.props.setProperty(selectedMessageIds, 'read', true)}>
         Mark As Read
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
-        onClick={() => this.props.setRead(selectedMessageIds, false)}>
+        onClick={() => this.props.setProperty(selectedMessageIds, 'read', false)}>
         Mark As Unread
         </button>
 
