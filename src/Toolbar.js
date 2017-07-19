@@ -62,7 +62,8 @@ class Toolbar extends Component {
         <option value="gschool">gschool</option>
         </select>
 
-        <button className="btn btn-default" disabled="disabled">
+        <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
+        onClick={() => this.props.setProperty(selectedMessageIds, 'delete')}>
         <i className="fa fa-trash-o"></i>
         </button>
         </div>

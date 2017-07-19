@@ -56,6 +56,12 @@ class App extends Component {
         command: 'read',
         read: value
       };
+    } else if (property === 'delete') {
+      updateServer = true;
+      requestBody = {
+        messageIds,
+        command: 'delete'
+      };
     } else if (property === 'selected') {
       updateServer = false;
     } else {
@@ -85,17 +91,34 @@ class App extends Component {
   }
 
   setPropertyUpdateState(messageIds, property, value) {
-    let changedMessagesById = {};
-    messageIds.forEach((id) => {
-      let message = this.state.messagesById[id];
-      changedMessagesById[id] = { ...message, [property]: value };
-    });
-    this.setState((prevState) => {
-      return {
-        messageIds: prevState.messageIds,
-        messagesById: { ...prevState.messagesById, ...changedMessagesById }
-      }
-    })
+    if (property === 'delete') {
+      // Not really a property. It means to delete the messages.
+      let newMessageIds = [];
+      let newMessagesById = {};
+      this.state.messageIds.filter(id => !messageIds.includes(id)).forEach(id => {
+        // These are the messages we want to keep
+        newMessageIds.push(id);
+        newMessagesById[id] = this.state.messagesById[id];
+      });
+      this.setState((prevState) => {
+        return {
+          messageIds: newMessageIds,
+          messagesById: newMessagesById
+        }
+      })
+    } else {
+      let changedMessagesById = {};
+      messageIds.forEach((id) => {
+        let message = this.state.messagesById[id];
+        changedMessagesById[id] = { ...message, [property]: value };
+      });
+      this.setState((prevState) => {
+        return {
+          messageIds: prevState.messageIds,
+          messagesById: { ...prevState.messagesById, ...changedMessagesById }
+        }
+      })
+    }
 
   }
 
