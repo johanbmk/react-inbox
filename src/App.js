@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './App.css';
-import Toolbar from './Toolbar.js';
-import ComposeForm from './ComposeForm.js';
-import MessageTable from './MessageTable.js';
+import Toolbar from './components/Toolbar.js';
+import ComposeForm from './components/ComposeForm.js';
+import MessageTable from './components/MessageTable.js';
 
 class App extends Component {
   constructor(props) {
