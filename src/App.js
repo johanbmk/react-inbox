@@ -1,18 +1,21 @@
 import React, { Component } from 'react';
 import './App.css';
 import Toolbar from './Toolbar.js';
+import ComposeForm from './ComposeForm.js';
 import MessageTable from './MessageTable.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { messageIds: [], messagesById: {} };
+    this.state = { composeMode: false, messageIds: [], messagesById: {} };
 
     this.fetchMessages = this.fetchMessages.bind(this);
     this.setProperty = this.setProperty.bind(this);
     this.setPropertyUpdateState = this.setPropertyUpdateState.bind(this);
     this.selectAllMessages = this.selectAllMessages.bind(this);
+    this.toggleComposeMode = this.toggleComposeMode.bind(this);
+    this.sendMessage = this.sendMessage.bind(this);
   }
 
   async fetchMessages() {
@@ -30,7 +33,7 @@ class App extends Component {
       this.setState({ messageIds, messagesById });
 
     } catch(err) {
-      console.error(err);
+      console.error('Error fetching messages:', err);
     }
   }
 
@@ -73,7 +76,6 @@ class App extends Component {
         command: value ? 'addLabel' : 'removeLabel',
         label
       };
-    console.log(requestBody);
     } else if (property === 'selected') {
       updateServer = false;
     } else {
@@ -93,9 +95,11 @@ class App extends Component {
 
         if (response.status === 200) {
           this.setPropertyUpdateState(messageIds, property, value, label);
+        } else {
+          console.error('API problem. Expected response status 200 but got:', response.status);
         }
       } catch(err) {
-        console.error('API problem:', err);
+        console.error('API error:', err);
       }
     } else {
       this.setPropertyUpdateState(messageIds, property, value);
@@ -171,13 +175,73 @@ class App extends Component {
     }
   }
 
+  toggleComposeMode() {
+    this.setState((prevState) => {
+      return {
+        composeMode: !prevState.composeMode
+      }
+    })
+  }
+
+  async sendMessage(event) {
+    event.preventDefault();
+    try {
+      const response = await fetch('http://localhost:8181/api/messages', {
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        method: "POST",
+        body: JSON.stringify({
+          subject: event.target.subject.value,
+          body: event.target.body.value
+        })
+      });
+      if (response.status === 200) {
+        const json = await response.json();
+        let newMessagesById = {};
+        newMessagesById[json.id] = {
+          id: json.id,
+          subject: json.subject,
+          starred: false,
+          read: false,
+          labels: [],
+          body: json.body
+        };
+        this.setState((prevState) => {
+          return {
+            messageIds: [...prevState.messageIds, json.id],
+            messagesById: {...prevState.messagesById, ...newMessagesById}
+          }
+        });
+      } else {
+        console.error('API problem. Expected response status 200 but got:', response.status);
+      }
+    } catch(err) {
+      console.error('API error:', err);
+    }
+    this.toggleComposeMode();
+  }
+
   render() {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar messageIds={this.state.messageIds} messagesById={this.state.messagesById} selectAllMessages={this.selectAllMessages} setProperty={this.setProperty} />
+          <Toolbar
+            messageIds={this.state.messageIds}
+            messagesById={this.state.messagesById}
+            selectAllMessages={this.selectAllMessages}
+            setProperty={this.setProperty}
+            toggleComposeMode={this.toggleComposeMode} />
 
-          <MessageTable messageIds={this.state.messageIds} messagesById={this.state.messagesById} setProperty={this.setProperty} />
+          <ComposeForm
+            composeMode={this.state.composeMode}
+            sendMessage={this.sendMessage} />
+
+          <MessageTable
+            messageIds={this.state.messageIds}
+            messagesById={this.state.messagesById}
+            setProperty={this.setProperty} />
         </div>
       </div>
     )
