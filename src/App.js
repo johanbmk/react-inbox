@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
+// import { connect } from 'react-redux'
 import './App.css';
-import Toolbar from './components/Toolbar.js';
-import ComposeForm from './components/ComposeForm.js';
+// import Toolbar from './components/Toolbar.js';
+// import ComposeForm from './components/ComposeForm.js';
 import MessageTable from './components/MessageTable.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
 
-    this.state = { composeMode: false, messageIds: [], messagesById: {} };
+    // this.state = { composeMode: false, messageIds: [], messagesById: {} };
 
     this.fetchMessages = this.fetchMessages.bind(this);
     this.setProperty = this.setProperty.bind(this);
@@ -37,9 +38,9 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
-    this.fetchMessages();
-  }
+  // componentDidMount() {
+  //   this.fetchMessages();
+  // }
 
   async setProperty(messageIds, property, value, label) {
     // 'label' is just for labels
@@ -227,7 +228,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <Toolbar
+          {/* <Toolbar
             messageIds={this.state.messageIds}
             messagesById={this.state.messagesById}
             selectAllMessages={this.selectAllMessages}
@@ -241,7 +242,9 @@ class App extends Component {
           <MessageTable
             messageIds={this.state.messageIds}
             messagesById={this.state.messagesById}
-            setProperty={this.setProperty} />
+            setProperty={this.setProperty} /> */}
+
+          <MessageTable />
         </div>
       </div>
     )
