@@ -233,17 +233,17 @@ class App extends Component {
             messagesById={this.state.messagesById}
             selectAllMessages={this.selectAllMessages}
             setProperty={this.setProperty}
-            toggleComposeMode={this.toggleComposeMode} />
+            toggleComposeMode={this.toggleComposeMode} /> */}
+          
 
-          <ComposeForm
+          {/* <ComposeForm
             composeMode={this.state.composeMode}
-            sendMessage={this.sendMessage} />
+            sendMessage={this.sendMessage} /> */}
 
-          <MessageTable
+          {/* <MessageTable
             messageIds={this.state.messageIds}
             messagesById={this.state.messagesById}
             setProperty={this.setProperty} /> */}
-
           <MessageTable />
         </div>
       </div>

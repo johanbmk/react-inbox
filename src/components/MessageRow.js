@@ -1,19 +1,20 @@
 import React, { Component } from 'react';
-import '../index.css';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { fetchMessages } from '../actions'    // TODO: Dummy for now.
 import Label from './Label.js';
+import '../index.css';
 
-// Available:
-// this.props.message
-// this.props.setProperty
 
 class MessageRow extends Component {
   render() {
-    const readClass = this.props.message.read ? 'read' : 'unread';
-    const selectedClass = this.props.message.selected ? 'selected' : '';
-    const starClass = this.props.message.starred ? 'star fa fa-star' : 'star fa fa-star-o';
+    let message = this.props.messagesById[this.props.messageId];
+    let readClass = message.read ? 'read' : 'unread';
+    let selectedClass = message.selected ? 'selected' : '';
+    let starClass = message.starred ? 'star fa fa-star' : 'star fa fa-star-o';
 
     var labels = [];
-    this.props.message.labels.forEach((labelText) => {
+    message.labels.forEach((labelText) => {
       labels.push(<Label text={labelText} key={labelText} />);
     });
 
@@ -22,20 +23,35 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={this.props.message.selected} onChange={() => this.props.setProperty([this.props.message.id], 'selected', !this.props.message.selected)} />
+              <input type="checkbox" checked={message.selected}
+                onChange={() => this.props.setProperty([message.id], 'selected', !message.selected)} />
             </div>
             <div className="col-xs-2">
-              <i className={starClass} onClick={() => this.props.setProperty([this.props.message.id], 'starred', !this.props.message.starred)}></i>
+              <i className={starClass}
+                onClick={() => this.props.setProperty([message.id], 'starred', !message.starred)}></i>
             </div>
           </div>
         </div>
         <div className="col-xs-11 text-left">
           {labels}
-          <a href="index.html">{this.props.message.subject}</a>
+          <a href="index.html">{message.subject}</a>
         </div>
       </div>
     )
   }
 }
 
-export default MessageRow;
+const mapStateToProps = state => {
+  return {
+    messagesById: state.messages.byId
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  fetchMessages: fetchMessages             // TODO: Dummy for now.
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MessageRow)

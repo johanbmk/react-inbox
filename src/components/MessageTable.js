@@ -17,9 +17,11 @@ export class MessageTable extends Component {
         <div>Loading...</div>
       )
     } else {
+      // Generate message row componente
       let rows = [];
       this.props.messageIds.forEach((id) => {
-        rows.push(<MessageRow message={this.props.messagesById[id]} key={id} />);
+        // rows.push(<MessageRow message={this.props.messagesById[id]} key={id} />);
+        rows.push(<MessageRow messageId={id} key={id} />);
       });
       return (
         <div className="MessageTable">
@@ -33,7 +35,7 @@ export class MessageTable extends Component {
 const mapStateToProps = state => {
   return {
     messageIds: state.messages.ids,
-    messagesById: state.messages.byId
+    messagesById: state.messages.byId         //TODO: Still needed?
   }
 }
 
