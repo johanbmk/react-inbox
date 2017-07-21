@@ -1,21 +1,32 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { fetchMessages } from '../actions'    // TODO: Dummy for now.
+import { toggleStar } from '../actions'
 import Label from './Label.js';
 import '../index.css';
 
 
 class MessageRow extends Component {
+
+  messageCheckboxWasClicked = (event) => {      // TODO needs fixing.
+    event.preventDefault();
+    let message = this.props.messagesById[this.props.messageId];
+    message.selected = !message.selected;
+  }
+
+  starWasClicked = (event) => {
+    event.preventDefault();
+    this.props.toggleStar(this.props.messageId);
+  }
+
   render() {
     let message = this.props.messagesById[this.props.messageId];
     let readClass = message.read ? 'read' : 'unread';
     let selectedClass = message.selected ? 'selected' : '';
     let starClass = message.starred ? 'star fa fa-star' : 'star fa fa-star-o';
 
-    var labels = [];
-    message.labels.forEach((labelText) => {
-      labels.push(<Label text={labelText} key={labelText} />);
+    let labels = message.labels.map((labelText) => {
+      return <Label text={labelText} key={labelText} />
     });
 
     return (
@@ -23,12 +34,11 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={message.selected}
-                onChange={() => this.props.setProperty([message.id], 'selected', !message.selected)} />
+              <input type="checkbox" checked={message.selected} onChange={this.messageCheckboxWasClicked} />
             </div>
             <div className="col-xs-2">
               <i className={starClass}
-                onClick={() => this.props.setProperty([message.id], 'starred', !message.starred)}></i>
+                onClick={this.starWasClicked}></i>
             </div>
           </div>
         </div>
@@ -48,7 +58,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchMessages: fetchMessages             // TODO: Dummy for now.
+  toggleStar: toggleStar
 }, dispatch)
 
 export default connect(

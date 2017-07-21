@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import { LOAD_MESSAGES, ADD_MESSAGE } from '../actions'
+import { LOAD_MESSAGES, TOGGLE_STAR } from '../actions'
 
 export function messages(state = { ids: [], byId: {} }, action) {
   switch (action.type) {
@@ -15,13 +15,14 @@ export function messages(state = { ids: [], byId: {} }, action) {
         }, {})
       }
 
-    case ADD_MESSAGE:
-      const { message } = action;
+    case TOGGLE_STAR:
+      const { messageId } = action;
+      let newMessage = { ...state.byId[messageId] };
+      newMessage.starred = !state.byId[messageId].starred;
       return {
-        ids: [...state.messageIds, message.id],
+        ids: [...state.ids],
         byId: {
-          ...state.byId,
-          [message.id]: message
+          ...state.byId, [messageId]: newMessage
         }
       }
 
