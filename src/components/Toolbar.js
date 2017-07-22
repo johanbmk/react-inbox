@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { selectAllMessages, setReadForSelected } from '../actions'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 import '../index.css';
+import {
+  selectAllMessages,
+  setReadForSelected,
+  setLabelForSelected
+} from '../actions';
 
 class Toolbar extends Component {
   render() {
@@ -54,7 +58,7 @@ class Toolbar extends Component {
         </button>
 
         <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
-        onChange={(event) => this.props.setProperty(selectedMessageIds, 'label', true, event.target.value)}>
+        onChange={(event) => this.props.setLabelForSelected(event.target.value, true)}>
         <option>Apply label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
@@ -62,8 +66,8 @@ class Toolbar extends Component {
         </select>
 
         <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
-        onChange={(event) => this.props.setProperty(selectedMessageIds, 'label', false, event.target.value)}>
-        <option>Remove label</option>
+        onChange={(event) => this.props.setLabelForSelected(event.target.value, false)}>
+        <option selected>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
@@ -90,7 +94,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   selectAllMessages,
-  setReadForSelected
+  setReadForSelected,
+  setLabelForSelected
 }, dispatch)
 
 export default connect(

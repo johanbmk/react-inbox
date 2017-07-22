@@ -3,6 +3,7 @@ export const SET_STARRED = 'SET_STARRED';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
 export const SET_READ = 'SET_READ';
+export const SET_LABEL = 'SET_LABEL';
 
 export function loadMessages(messages) {
   return {
@@ -36,6 +37,15 @@ export function setReadState(messageIds, value) {
   return {
     type: SET_READ,
     messageIds,
+    value
+  }
+}
+
+export function setLabelState(messageIds, label, value) {
+  return {
+    type: SET_LABEL,
+    messageIds,
+    label,
     value
   }
 }
@@ -80,6 +90,22 @@ export function setReadForSelected(value) {
     const response = await api.updateMessages(requestBody);
     if (response.status === 200) {
       return dispatch(setReadState(selectedMessageIds, value))
+    }
+  }
+}
+
+export function setLabelForSelected(label, value) {
+  return async (dispatch, getState, { api }) => {
+    const state = getState();
+    let selectedMessageIds = state.messages.ids.filter(id => state.messages.byId[id].selected);
+    let requestBody = {
+      messageIds: selectedMessageIds,
+      command: value ? 'addLabel': 'removeLabel',
+      label: label
+    };
+    const response = await api.updateMessages(requestBody);
+    if (response.status === 200) {
+      return dispatch(setLabelState(selectedMessageIds, label, value))
     }
   }
 }

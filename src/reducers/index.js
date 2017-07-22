@@ -4,7 +4,8 @@ import {
   SET_STARRED,
   TOGGLE_SELECTED,
   SELECT_ALL_MESSAGES,
-  SET_READ
+  SET_READ,
+  SET_LABEL
 } from '../actions';
 
 export function messages(state = { ids: [], byId: {} }, action) {
@@ -64,6 +65,29 @@ export function messages(state = { ids: [], byId: {} }, action) {
         result[id] = { ...state.byId[id], read: action.value };
         return result;
       }, {})
+      return {
+        ids: [ ...state.ids ],
+        byId: { ...state.byId, ...changedMessagesById }
+      }
+
+    case SET_LABEL:
+      let filteredMessageIds = action.value ?
+        action.messageIds.filter((id) => !state.byId[id].labels.includes(action.label)) :
+        action.messageIds.filter((id) => state.byId[id].labels.includes(action.label));
+
+      changedMessagesById = {};
+      filteredMessageIds.forEach((id) => {
+        let newLabels;
+        let message = state.byId[id];
+        if (action.value) {
+          // Add label to labels array for this message
+          newLabels = [ ...message.labels, action.label];
+        } else {
+          // Remove label from labels array for this message
+          newLabels = message.labels.filter((lbl) => lbl !== action.label);
+        }
+        changedMessagesById[id] = { ...message, labels: newLabels };
+      })
       return {
         ids: [ ...state.ids ],
         byId: { ...state.byId, ...changedMessagesById }
