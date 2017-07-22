@@ -3,7 +3,8 @@ import {
   LOAD_MESSAGES,
   SET_STARRED,
   TOGGLE_SELECTED,
-  SELECT_ALL_MESSAGES
+  SELECT_ALL_MESSAGES,
+  SET_READ
 } from '../actions';
 
 export function messages(state = { ids: [], byId: {} }, action) {
@@ -53,6 +54,16 @@ export function messages(state = { ids: [], byId: {} }, action) {
           return result;
         }, {})
       }
+      return {
+        ids: [ ...state.ids ],
+        byId: { ...state.byId, ...changedMessagesById }
+      }
+
+    case SET_READ:
+      changedMessagesById = action.messageIds.reduce((result, id) => {
+        result[id] = { ...state.byId[id], read: action.value };
+        return result;
+      }, {})
       return {
         ids: [ ...state.ids ],
         byId: { ...state.byId, ...changedMessagesById }

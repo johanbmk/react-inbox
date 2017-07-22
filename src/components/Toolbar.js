@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { selectAllMessages } from '../actions'
+import { selectAllMessages, setReadForSelected } from '../actions'
 import '../index.css';
 
 class Toolbar extends Component {
@@ -44,12 +44,12 @@ class Toolbar extends Component {
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
-        onClick={() => this.props.setProperty(selectedMessageIds, 'read', true)}>
+        onClick={() => this.props.setReadForSelected(true)}>
         Mark As Read
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
-        onClick={() => this.props.setProperty(selectedMessageIds, 'read', false)}>
+        onClick={() => this.props.setReadForSelected(false)}>
         Mark As Unread
         </button>
 
@@ -89,7 +89,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  selectAllMessages: selectAllMessages
+  selectAllMessages,
+  setReadForSelected
 }, dispatch)
 
 export default connect(
