@@ -4,6 +4,7 @@ export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
 export const SET_READ = 'SET_READ';
 export const SET_LABEL = 'SET_LABEL';
+export const DELETE_MESSAGES = 'DELETE_MESSAGES';
 
 export function loadMessages(messages) {
   return {
@@ -47,6 +48,13 @@ export function setLabelState(messageIds, label, value) {
     messageIds,
     label,
     value
+  }
+}
+
+export function deleteFromState(messageIds) {
+  return {
+    type: DELETE_MESSAGES,
+    messageIds
   }
 }
 
@@ -106,6 +114,21 @@ export function setLabelForSelected(label, value) {
     const response = await api.updateMessages(requestBody);
     if (response.status === 200) {
       return dispatch(setLabelState(selectedMessageIds, label, value))
+    }
+  }
+}
+
+export function deleteSelected() {
+  return async (dispatch, getState, { api }) => {
+    const state = getState();
+    let selectedMessageIds = state.messages.ids.filter(id => state.messages.byId[id].selected);
+    let requestBody = {
+      messageIds: selectedMessageIds,
+      command: 'delete'
+    };
+    const response = await api.updateMessages(requestBody);
+    if (response.status === 200) {
+      return dispatch(deleteFromState(selectedMessageIds))
     }
   }
 }

@@ -5,7 +5,8 @@ import {
   TOGGLE_SELECTED,
   SELECT_ALL_MESSAGES,
   SET_READ,
-  SET_LABEL
+  SET_LABEL,
+  DELETE_MESSAGES
 } from '../actions';
 
 export function messages(state = { ids: [], byId: {} }, action) {
@@ -72,11 +73,11 @@ export function messages(state = { ids: [], byId: {} }, action) {
 
     case SET_LABEL:
       let filteredMessageIds = action.value ?
-        action.messageIds.filter((id) => !state.byId[id].labels.includes(action.label)) :
-        action.messageIds.filter((id) => state.byId[id].labels.includes(action.label));
+        action.messageIds.filter(id => !state.byId[id].labels.includes(action.label)) :
+        action.messageIds.filter(id => state.byId[id].labels.includes(action.label));
 
       changedMessagesById = {};
-      filteredMessageIds.forEach((id) => {
+      filteredMessageIds.forEach(id => {
         let newLabels;
         let message = state.byId[id];
         if (action.value) {
@@ -84,13 +85,24 @@ export function messages(state = { ids: [], byId: {} }, action) {
           newLabels = [ ...message.labels, action.label];
         } else {
           // Remove label from labels array for this message
-          newLabels = message.labels.filter((lbl) => lbl !== action.label);
+          newLabels = message.labels.filter(lbl => lbl !== action.label);
         }
         changedMessagesById[id] = { ...message, labels: newLabels };
       })
       return {
         ids: [ ...state.ids ],
         byId: { ...state.byId, ...changedMessagesById }
+      }
+
+    case DELETE_MESSAGES:
+      let remainingMessagesIds = state.ids.filter(id => !action.messageIds.includes(id));
+      let remainingMessagesById = remainingMessagesIds.reduce((result, id) => {
+        result[id] = { ...state.byId[id] };
+        return result;
+      }, {})
+      return {
+        ids: [ ...remainingMessagesIds ],
+        byId: { ...remainingMessagesById }
       }
 
     default:

@@ -5,7 +5,8 @@ import '../index.css';
 import {
   selectAllMessages,
   setReadForSelected,
-  setLabelForSelected
+  setLabelForSelected,
+  deleteSelected
 } from '../actions';
 
 class Toolbar extends Component {
@@ -67,14 +68,14 @@ class Toolbar extends Component {
 
         <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
         onChange={(event) => this.props.setLabelForSelected(event.target.value, false)}>
-        <option selected>Remove label</option>
+        <option>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
         </select>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
-        onClick={() => this.props.setProperty(selectedMessageIds, 'delete')}>
+        onClick={this.props.deleteSelected}>
         <i className="fa fa-trash-o"></i>
         </button>
         </div>
@@ -95,7 +96,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   selectAllMessages,
   setReadForSelected,
-  setLabelForSelected
+  setLabelForSelected,
+  deleteSelected
 }, dispatch)
 
 export default connect(
