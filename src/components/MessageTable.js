@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import { fetchMessages } from '../actions'
 import '../index.css';
 import MessageRow from './MessageRow.js';
-import { fetchMessages } from '../actions'
 
 
-export class MessageTable extends Component {
+class MessageTable extends Component {
   componentDidMount() {
     this.props.fetchMessages();
   }

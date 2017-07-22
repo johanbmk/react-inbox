@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { selectAllMessages } from '../actions'
 import '../index.css';
 
 class Toolbar extends Component {
@@ -34,10 +37,10 @@ class Toolbar extends Component {
         unread messages
         </p>
 
-        <a className="btn btn-danger" onClick={this.props.toggleComposeMode}><i className="fa fa-plus"></i></a>
+        <a className="btn btn-danger"><i className="fa fa-plus"></i></a>
 
         <button className="btn btn-default">
-        <i className={selectAllButtonClass} onClick={() => this.props.selectAllMessages(selectedMessageIds)}></i>
+        <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
         </button>
 
         <button className="btn btn-default" disabled={selectedMessageIds.length === 0}
@@ -78,4 +81,18 @@ class Toolbar extends Component {
   }
 }
 
-export default Toolbar;
+const mapStateToProps = state => {
+  return {
+    messageIds: state.messages.ids,
+    messagesById: state.messages.byId
+  }
+}
+
+const mapDispatchToProps = dispatch => bindActionCreators({
+  selectAllMessages: selectAllMessages
+}, dispatch)
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Toolbar)

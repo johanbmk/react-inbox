@@ -1,6 +1,7 @@
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
 export const SET_STARRED = 'SET_STARRED';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
+export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
 
 export function loadMessages(messages) {
   return {
@@ -21,6 +22,12 @@ export function toggleSelected(messageId) {
   return {
     type: TOGGLE_SELECTED,
     messageId
+  }
+}
+
+export function selectAllMessages() {
+  return {
+    type: SELECT_ALL_MESSAGES
   }
 }
 

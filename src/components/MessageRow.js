@@ -9,12 +9,12 @@ import '../index.css';
 class MessageRow extends Component {
 
   starWasClicked = (event) => {
-    event.preventDefault();
+    // event.preventDefault();  // seems to make no diffrence here.
     this.props.toggleStarred(this.props.messageId);
   }
 
-  messageCheckboxWasClicked = (event) => {      // TODO needs fixing.
-    // event.preventDefault();
+  messageCheckboxWasClicked = (event) => {
+    // event.preventDefault(); // Having this enabled made checkmark and highlight (css) go out of sync.
     this.props.toggleSelected(this.props.messageId);
   }
 
@@ -33,7 +33,8 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={this.props.messagesById[this.props.messageId].selected} onChange={this.messageCheckboxWasClicked} />
+              <input type="checkbox" checked={message.selected}
+                onChange={this.messageCheckboxWasClicked} />
             </div>
             <div className="col-xs-2">
               <i className={starClass} onClick={this.starWasClicked}></i>

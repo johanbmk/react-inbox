@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import { connect } from 'react-redux'
 import './App.css';
-// import Toolbar from './components/Toolbar.js';
+import Toolbar from './components/Toolbar.js';
 // import ComposeForm from './components/ComposeForm.js';
 import MessageTable from './components/MessageTable.js';
 
@@ -234,16 +234,12 @@ class App extends Component {
             selectAllMessages={this.selectAllMessages}
             setProperty={this.setProperty}
             toggleComposeMode={this.toggleComposeMode} /> */}
-          
+          <Toolbar />
 
           {/* <ComposeForm
             composeMode={this.state.composeMode}
             sendMessage={this.sendMessage} /> */}
 
-          {/* <MessageTable
-            messageIds={this.state.messageIds}
-            messagesById={this.state.messagesById}
-            setProperty={this.setProperty} /> */}
           <MessageTable />
         </div>
       </div>
