@@ -1,22 +1,21 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { toggleStar } from '../actions'
+import { toggleStarred, toggleSelected } from '../actions'
 import Label from './Label.js';
 import '../index.css';
 
 
 class MessageRow extends Component {
 
-  messageCheckboxWasClicked = (event) => {      // TODO needs fixing.
-    event.preventDefault();
-    let message = this.props.messagesById[this.props.messageId];
-    message.selected = !message.selected;
-  }
-
   starWasClicked = (event) => {
     event.preventDefault();
-    this.props.toggleStar(this.props.messageId);
+    this.props.toggleStarred(this.props.messageId);
+  }
+
+  messageCheckboxWasClicked = (event) => {      // TODO needs fixing.
+    // event.preventDefault();
+    this.props.toggleSelected(this.props.messageId);
   }
 
   render() {
@@ -34,11 +33,10 @@ class MessageRow extends Component {
         <div className="col-xs-1">
           <div className="row">
             <div className="col-xs-2">
-              <input type="checkbox" checked={message.selected} onChange={this.messageCheckboxWasClicked} />
+              <input type="checkbox" checked={this.props.messagesById[this.props.messageId].selected} onChange={this.messageCheckboxWasClicked} />
             </div>
             <div className="col-xs-2">
-              <i className={starClass}
-                onClick={this.starWasClicked}></i>
+              <i className={starClass} onClick={this.starWasClicked}></i>
             </div>
           </div>
         </div>
@@ -58,7 +56,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  toggleStar: toggleStar
+  toggleStarred,
+  toggleSelected
 }, dispatch)
 
 export default connect(

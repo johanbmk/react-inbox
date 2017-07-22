@@ -1,5 +1,6 @@
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
-export const TOGGLE_STAR = 'TOGGLE_STAR';
+export const SET_STARRED = 'SET_STARRED';
+export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 
 export function loadMessages(messages) {
   return {
@@ -8,11 +9,18 @@ export function loadMessages(messages) {
   }
 }
 
-export function setStarState(messageId, starState) {
+export function setStarState(messageId, starValue) {
   return {
-    type: TOGGLE_STAR,
+    type: SET_STARRED,
     messageId,
-    starState
+    starValue
+  }
+}
+
+export function toggleSelected(messageId) {
+  return {
+    type: TOGGLE_SELECTED,
+    messageId
   }
 }
 
@@ -28,7 +36,7 @@ export function fetchMessages() {
   }
 }
 
-export function toggleStar(messageId) {
+export function toggleStarred(messageId) {
   return async (dispatch, getState, { api }) => {
     const state = getState();
     let newStarredValue = !state.messages.byId[messageId].starred;

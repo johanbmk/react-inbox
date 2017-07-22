@@ -17,10 +17,9 @@ export class MessageTable extends Component {
         <div>Loading...</div>
       )
     } else {
-      // Generate message row componente
+      // Generate message row components
       let rows = [];
       this.props.messageIds.forEach((id) => {
-        // rows.push(<MessageRow message={this.props.messagesById[id]} key={id} />);
         rows.push(<MessageRow messageId={id} key={id} />);
       });
       return (
