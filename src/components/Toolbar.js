@@ -11,6 +11,14 @@ import {
 } from '../actions';
 
 class Toolbar extends Component {
+
+  labelSelectorWasChanged = (event, value) => {
+    let selection = event.target.value;
+    if (!['Apply label', 'Remove label'].includes(selection)) {
+      this.props.setLabelForSelected(selection, value)
+    }
+  }
+
   render() {
     let totalMessagesCount = this.props.messageIds.length;
     let selectedMessageIds = [];
@@ -59,16 +67,16 @@ class Toolbar extends Component {
         Mark As Unread
         </button>
 
-        <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
-        onChange={(event) => this.props.setLabelForSelected(event.target.value, true)}>
+        <select value="Apply label" className="form-control label-select" disabled={selectedMessageIds.length === 0}
+        onChange={(event) => this.labelSelectorWasChanged(event, true)}>
         <option>Apply label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
         <option value="gschool">gschool</option>
         </select>
 
-        <select className="form-control label-select" disabled={selectedMessageIds.length === 0}
-        onChange={(event) => this.props.setLabelForSelected(event.target.value, false)}>
+        <select value="Remove label" className="form-control label-select" disabled={selectedMessageIds.length === 0}
+        onChange={(event) => this.labelSelectorWasChanged(event, false)}>
         <option>Remove label</option>
         <option value="dev">dev</option>
         <option value="personal">personal</option>
