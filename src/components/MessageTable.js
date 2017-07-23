@@ -17,7 +17,6 @@ class MessageTable extends Component {
         <div>Loading...</div>
       )
     } else {
-      // Generate message row components
       let rows = [];
       this.props.messageIds.forEach((id) => {
         rows.push(<MessageRow messageId={id} key={id} />);
@@ -33,8 +32,7 @@ class MessageTable extends Component {
 
 const mapStateToProps = state => {
   return {
-    messageIds: state.messages.ids,
-    messagesById: state.messages.byId         //TODO: Still needed?
+    messageIds: state.messages.ids
   }
 }
 
