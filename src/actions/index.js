@@ -5,6 +5,8 @@ export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
 export const SET_READ = 'SET_READ';
 export const SET_LABEL = 'SET_LABEL';
 export const DELETE_MESSAGES = 'DELETE_MESSAGES';
+export const TOGGLE_COMPOSE_MODE = 'TOGGLE_COMPOSE_MODE';
+export const ADD_MESSAGE = 'ADD_MESSAGE';
 
 export function loadMessages(messages) {
   return {
@@ -55,6 +57,19 @@ export function deleteFromState(messageIds) {
   return {
     type: DELETE_MESSAGES,
     messageIds
+  }
+}
+
+export function toggleComposeMode() {
+  return {
+    type: TOGGLE_COMPOSE_MODE
+  }
+}
+
+export function addMessageToState(message) {
+  return {
+    type: ADD_MESSAGE,
+    message
   }
 }
 
@@ -129,6 +144,20 @@ export function deleteSelected() {
     const response = await api.updateMessages(requestBody);
     if (response.status === 200) {
       return dispatch(deleteFromState(selectedMessageIds))
+    }
+  }
+}
+
+export function sendMessage(subject, body) {
+  return async (dispatch, getState, { api }) => {
+    let requestBody = {
+      subject,
+      body
+    };
+    const response = await api.sendMessage(requestBody);
+    if (response.status === 200) {
+      const message = await response.json();
+      return dispatch(addMessageToState(message))
     }
   }
 }

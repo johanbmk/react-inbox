@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 // import { connect } from 'react-redux'
 import './App.css';
 import Toolbar from './components/Toolbar.js';
-// import ComposeForm from './components/ComposeForm.js';
+import ComposeForm from './components/ComposeForm.js';
 import MessageTable from './components/MessageTable.js';
 
 class App extends Component {
@@ -235,11 +235,10 @@ class App extends Component {
             setProperty={this.setProperty}
             toggleComposeMode={this.toggleComposeMode} /> */}
           <Toolbar />
-
           {/* <ComposeForm
             composeMode={this.state.composeMode}
             sendMessage={this.sendMessage} /> */}
-
+          <ComposeForm />
           <MessageTable />
         </div>
       </div>

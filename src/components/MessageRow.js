@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import '../index.css';
 import { toggleStarred, toggleSelected } from '../actions'
 import Label from './Label.js';
-import '../index.css';
 
 
 class MessageRow extends Component {

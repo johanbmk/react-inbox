@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../index.css';
 import {
+  toggleComposeMode,
   selectAllMessages,
   setReadForSelected,
   setLabelForSelected,
@@ -42,7 +43,7 @@ class Toolbar extends Component {
         unread messages
         </p>
 
-        <a className="btn btn-danger"><i className="fa fa-plus"></i></a>
+        <a className="btn btn-danger" onClick={this.props.toggleComposeMode}><i className="fa fa-plus"></i></a>
 
         <button className="btn btn-default">
         <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
@@ -94,6 +95,7 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  toggleComposeMode,
   selectAllMessages,
   setReadForSelected,
   setLabelForSelected,
