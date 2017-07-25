@@ -5,7 +5,6 @@ export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
 export const SET_READ = 'SET_READ';
 export const SET_LABEL = 'SET_LABEL';
 export const DELETE_MESSAGES = 'DELETE_MESSAGES';
-export const TOGGLE_COMPOSE_MODE = 'TOGGLE_COMPOSE_MODE';
 export const ADD_MESSAGE = 'ADD_MESSAGE';
 
 export function loadMessages(messages) {
@@ -57,12 +56,6 @@ export function deleteFromState(messageIds) {
   return {
     type: DELETE_MESSAGES,
     messageIds
-  }
-}
-
-export function toggleComposeMode() {
-  return {
-    type: TOGGLE_COMPOSE_MODE
   }
 }
 

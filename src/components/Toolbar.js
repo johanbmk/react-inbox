@@ -3,12 +3,13 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import '../index.css';
 import {
-  toggleComposeMode,
   selectAllMessages,
   setReadForSelected,
   setLabelForSelected,
   deleteSelected
 } from '../actions';
+import { Link } from 'react-router-dom';
+
 
 class Toolbar extends Component {
 
@@ -41,6 +42,9 @@ class Toolbar extends Component {
       selectAllButtonClass = 'fa fa-minus-square-o'; // some messages selected
     }
 
+    console.log(this.props);
+    let composeLink = this.props.location.pathname === '/compose' ? '/' : '/compose';
+
     return (
       <div className="Toolbar">
 
@@ -51,7 +55,7 @@ class Toolbar extends Component {
         unread messages
         </p>
 
-        <a className="btn btn-danger" onClick={this.props.toggleComposeMode}><i className="fa fa-plus"></i></a>
+        <Link to={composeLink} className="btn btn-danger"><i className="fa fa-plus"></i></Link>
 
         <button className="btn btn-default">
         <i className={selectAllButtonClass} onClick={this.props.selectAllMessages}></i>
@@ -103,7 +107,6 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  toggleComposeMode,
   selectAllMessages,
   setReadForSelected,
   setLabelForSelected,

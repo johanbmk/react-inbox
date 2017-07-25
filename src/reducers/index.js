@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
 import {
-  TOGGLE_COMPOSE_MODE,
   ADD_MESSAGE,
   LOAD_MESSAGES,
   SET_STARRED,
@@ -10,20 +9,6 @@ import {
   SET_LABEL,
   DELETE_MESSAGES
 } from '../actions';
-
-
-export function app(state = { composeMode: false }, action) {
-  switch (action.type) {
-
-    case TOGGLE_COMPOSE_MODE:
-      return {
-        composeMode: !state.composeMode
-      }
-
-    default:
-      return state
-  }
-}
 
 
 export function messages(state = { ids: [], byId: {} }, action) {
@@ -137,6 +122,5 @@ export function messages(state = { ids: [], byId: {} }, action) {
 }
 
 export default combineReducers({
-  app,
   messages
 })

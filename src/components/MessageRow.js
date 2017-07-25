@@ -4,6 +4,8 @@ import { connect } from 'react-redux'
 import '../index.css';
 import { toggleStarred, toggleSelected } from '../actions'
 import Label from './Label.js';
+import MessageViewer from './MessageViewer.js';
+import { Route, Link } from 'react-router-dom';
 
 
 class MessageRow extends Component {
@@ -29,23 +31,26 @@ class MessageRow extends Component {
     });
 
     return (
-      <div className={`row message ${readClass} ${selectedClass}`}>
-        <div className="col-xs-1">
-          <div className="row">
-            <div className="col-xs-2">
-              <input type="checkbox" checked={message.selected}
-                onChange={this.messageCheckboxWasClicked} />
+        <div>
+          <div className={`row message ${readClass} ${selectedClass}`}>
+            <div className="col-xs-1">
+              <div className="row">
+                <div className="col-xs-2">
+                  <input type="checkbox" checked={message.selected}
+                    onChange={this.messageCheckboxWasClicked} />
+                  </div>
+                  <div className="col-xs-2">
+                    <i className={starClass} onClick={this.starWasClicked}></i>
+                  </div>
+                </div>
+              </div>
+              <div className="col-xs-11 text-left">
+                {labels}
+                <Link to={`/messages/${this.props.messageId}`}>{message.subject}</Link>
+              </div>
             </div>
-            <div className="col-xs-2">
-              <i className={starClass} onClick={this.starWasClicked}></i>
-            </div>
-          </div>
-        </div>
-        <div className="col-xs-11 text-left">
-          {labels}
-          <a href="index.html">{message.subject}</a>
-        </div>
-      </div>
+            <Route path={`/messages/${this.props.messageId}`} component={() => (<MessageViewer id={this.props.messageId} />)}/>
+       </div>
     )
   }
 }
