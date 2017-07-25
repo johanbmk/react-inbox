@@ -19,7 +19,7 @@ class MessageTable extends Component {
     } else {
       let rows = [];
       this.props.messageIds.forEach((id) => {
-        rows.push(<MessageRow messageId={id} key={id} />);
+        rows.push(<MessageRow messageId={id} key={id} match={this.props} />);
       });
       return (
         <div className="MessageTable">

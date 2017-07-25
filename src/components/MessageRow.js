@@ -49,7 +49,8 @@ class MessageRow extends Component {
                 <Link to={`/messages/${this.props.messageId}`}>{message.subject}</Link>
               </div>
             </div>
-            <Route path={`/messages/${this.props.messageId}`} component={() => (<MessageViewer id={this.props.messageId} />)}/>
+            <Route exact path={`/messages/${this.props.messageId}`} render={() => (<MessageViewer id={this.props.messageId} />)}/>
+            {/* <Route exact path={`/messages/${this.props.messageId}`} component={MessageViewer} /> */}
        </div>
     )
   }

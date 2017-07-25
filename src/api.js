@@ -4,6 +4,11 @@ export default class api {
     .then(response => response.json());
   }
 
+  static fetchMessage(id) {
+    return fetch(`http://localhost:8181/api/messages/${id}`)
+    .then(response => response.json());
+  }
+
   static updateMessages(requestBody) {
     return fetch('http://localhost:8181/api/messages', {
       headers: {

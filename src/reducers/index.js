@@ -1,13 +1,14 @@
 import { combineReducers } from 'redux';
 import {
-  ADD_MESSAGE,
   LOAD_MESSAGES,
+  LOAD_MESSAGE_BODY,
   SET_STARRED,
   TOGGLE_SELECTED,
   SELECT_ALL_MESSAGES,
   SET_READ,
   SET_LABEL,
-  DELETE_MESSAGES
+  DELETE_MESSAGES,
+  ADD_MESSAGE
 } from '../actions';
 
 
@@ -121,6 +122,21 @@ export function messages(state = { ids: [], byId: {} }, action) {
   }
 }
 
+
+export function viewedMessage(state = { body: '' }, action) {
+  switch (action.type) {
+
+    case LOAD_MESSAGE_BODY:
+      return { body: action.messageBody }
+
+    default:
+      return state
+
+  }
+}
+
+
 export default combineReducers({
-  messages
+  messages,
+  viewedMessage
 })

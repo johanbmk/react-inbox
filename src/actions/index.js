@@ -1,4 +1,5 @@
 export const LOAD_MESSAGES = 'LOAD_MESSAGES';
+export const LOAD_MESSAGE_BODY = 'LOAD_MESSAGE_BODY';
 export const SET_STARRED = 'SET_STARRED';
 export const TOGGLE_SELECTED = 'TOGGLE_SELECTED';
 export const SELECT_ALL_MESSAGES = 'SELECT_ALL_MESSAGES';
@@ -11,6 +12,13 @@ export function loadMessages(messages) {
   return {
     type: LOAD_MESSAGES,
     messages
+  }
+}
+
+export function loadMessageBody(messageBody) {
+  return {
+    type: LOAD_MESSAGE_BODY,
+    messageBody
   }
 }
 
@@ -75,6 +83,13 @@ export function fetchMessages() {
     }
     const json = await api.fetchMessages();
     return dispatch(loadMessages(json._embedded.messages))
+  }
+}
+
+export function fetchMessage(id) {
+  return async (dispatch, getState, { api }) => {
+    const json = await api.fetchMessage(id);
+    return dispatch(loadMessageBody(json.body))
   }
 }
 

@@ -42,7 +42,7 @@ class Toolbar extends Component {
       selectAllButtonClass = 'fa fa-minus-square-o'; // some messages selected
     }
 
-    console.log(this.props);
+    // console.log(this.props);
     let composeLink = this.props.location.pathname === '/compose' ? '/' : '/compose';
 
     return (

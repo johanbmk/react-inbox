@@ -12,7 +12,7 @@ const App = () => (
       <div className="container">
         <Route path="/" component={Toolbar} />
         <Route path="/compose" component={ComposeForm} />
-        <MessageTable />
+        <Route path="/" component={MessageTable} />
       </div>
     </div>
   </Router>
