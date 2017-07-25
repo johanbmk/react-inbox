@@ -125,6 +125,21 @@ export function setReadForSelected(value) {
   }
 }
 
+export function setMessageRead(messageId) {
+  return async (dispatch, getState, { api }) => {
+    let messageIds = [messageId];
+    let requestBody = {
+      messageIds: messageIds,
+      command: 'read',
+      read: true
+    };
+    const response = await api.updateMessages(requestBody);
+    if (response.status === 200) {
+      return dispatch(setReadState(messageIds, true))
+    }
+  }
+}
+
 export function setLabelForSelected(label, value) {
   return async (dispatch, getState, { api }) => {
     const state = getState();

@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import '../index.css';
-import { fetchMessage } from '../actions'
+import { fetchMessage, setMessageRead } from '../actions'
 
 
 class MessageViewer extends Component {
   componentDidMount() {
     this.props.fetchMessage(this.props.id);
+    this.props.setMessageRead(this.props.id);
   }
 
   render() {
@@ -38,7 +39,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchMessage: fetchMessage
+  fetchMessage,
+  setMessageRead
 }, dispatch)
 
 export default connect(
